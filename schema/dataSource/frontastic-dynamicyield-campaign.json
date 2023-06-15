@@ -1,9 +1,0 @@
-{
-  "customDataSourceType": "nosto/product-recommendations",
-  "name": "Nosto Product Recommendations",
-  "category": "Content",
-  "icon": "group",
-  "schema": [
-
-  ]
-}

@@ -5,19 +5,19 @@ import { Guid } from '@Commerce-commercetools/utils/Guid';
 
 const apiUrl = 'https://api.nosto.com/v1/graphql';
 
-export default class BaseApi {
+export default abstract class BaseApi {
   private sessionId: string;
   private apiToken: string;
   constructor(frontasticContext: Context) {
     const configuration = frontasticContext.project.configuration;
     this.apiToken = configuration?.nosto?.apiToken;
-    console.log('############# api token ###############');
-    console.log(this.apiToken);
   }
 
   public getSessionId(): string {
     return this.sessionId;
   }
+
+  public abstract fetchRecommendation();
 
   private fetch(body: string): Promise<string> {
     const headers = {

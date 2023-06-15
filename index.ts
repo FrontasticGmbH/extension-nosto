@@ -1,39 +1,63 @@
 import { DataSourceConfiguration, DataSourceContext, ExtensionRegistry } from '@frontastic/extension-types';
 import { Product } from '@Types/product/Product';
 import { ValidationError } from './utils/Errors';
-import RecommendationApi from './apis/RecommendationApi';
+import BaseApi from './apis/BaseApi';
+import RecommendationApiFactory from "./apis/RecommendationApiFactory";
 
 export default {
   'data-sources': {
     'nosto/product-recommendations': async (config: DataSourceConfiguration, context: DataSourceContext) => {
       console.log('##############################');
       console.log('nosto/product-recommendations');
-      if (!context.hasOwnProperty('request')) {
-        throw new ValidationError({
-          message: `Request is not defined in context ${context}`,
-        });
-      }
 
-      const userId: string = context.request?.clientIp;
-      if (!userId) {
-        throw new ValidationError({
-          message: `Client IP is not defined in context request ${context.request}`,
-        });
-      }
+      validate(config, context);
+      const target: string = context.request.query.target;
+      const pageType: string = config.configuration.pageType;
+
       console.log('$$$$$$$$$$$ ready to new RecommendationApi $$$$$$$$$$$$$');
-      const recommendApi: RecommendationApi = new RecommendationApi(context.frontasticContext);
+      const recommendApi: BaseApi = RecommendationApiFactory.getInstance(context.frontasticContext, pageType);
       console.log(recommendApi.getSessionId());
       if (recommendApi && !recommendApi.getSessionId()) {
         console.log('####### create session ######');
         await recommendApi.createSession();
       }
       console.log(recommendApi.getSessionId());
-      // const dyApi: DynamicYieldApi = new DynamicYieldApi(context.frontasticContext, userId);
 
+      recommendApi.fetchRecommendation()
       const items: Product[] = []; //await dyApi.choose(dyContext, selector);
       return {
         dataSourcePayload: { items },
       };
     },
   },
+
+
+
 } as ExtensionRegistry;
+
+function validate(config: DataSourceConfiguration, context: DataSourceContext) {
+  if (!context.hasOwnProperty('request')) {
+    throw new ValidationError({
+      message: `Request is not defined in context ${context}`,
+    });
+  }
+  if (!config.hasOwnProperty('configuration')) {
+    throw new ValidationError({
+      message: `Configuration is not defined in data source configuration ${config}`,
+    });
+  }
+
+  const target: string = context.request?.query?.target;
+  const pageType: string = config.configuration?.pageType;
+
+  // if (!target) {
+  //   throw new ValidationError({
+  //     message: `target is not defined in context request ${context.request}`,
+  //   });
+  // }
+  if (!pageType) {
+    throw new ValidationError({
+      message: `pageType is not defined in data source configuration ${config.configuration}`,
+    });
+  }
+}
