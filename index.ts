@@ -2,7 +2,7 @@ import { DataSourceConfiguration, DataSourceContext, ExtensionRegistry } from '@
 import { Product } from '@Types/product/Product';
 import { ValidationError } from './utils/Errors';
 import BaseApi from './apis/BaseApi';
-import RecommendationApiFactory from "./apis/RecommendationApiFactory";
+import RecommendationApiFactory from './apis/RecommendationApiFactory';
 
 export default {
   'data-sources': {
@@ -23,16 +23,14 @@ export default {
       }
       console.log(recommendApi.getSessionId());
 
-      recommendApi.fetchRecommendation()
-      const items: Product[] = []; //await dyApi.choose(dyContext, selector);
+      const recommendedProducts: [] = await recommendApi.fetchRecommendation(target);
+      console.log('######### recommendedProducts #########');
+      console.log(recommendedProducts);
       return {
-        dataSourcePayload: { items },
+        dataSourcePayload: { recommendedProducts },
       };
     },
   },
-
-
-
 } as ExtensionRegistry;
 
 function validate(config: DataSourceConfiguration, context: DataSourceContext) {
@@ -50,11 +48,11 @@ function validate(config: DataSourceConfiguration, context: DataSourceContext) {
   const target: string = context.request?.query?.target;
   const pageType: string = config.configuration?.pageType;
 
-  // if (!target) {
-  //   throw new ValidationError({
-  //     message: `target is not defined in context request ${context.request}`,
-  //   });
-  // }
+  if (!target) {
+    throw new ValidationError({
+      message: `target is not defined in context request ${context.request}`,
+    });
+  }
   if (!pageType) {
     throw new ValidationError({
       message: `pageType is not defined in data source configuration ${config.configuration}`,

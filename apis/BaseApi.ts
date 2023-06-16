@@ -17,9 +17,9 @@ export default abstract class BaseApi {
     return this.sessionId;
   }
 
-  public abstract fetchRecommendation();
+  public abstract fetchRecommendation(target: string);
 
-  private fetch(body: string): Promise<string> {
+  protected fetch(body: string): Promise<string> {
     const headers = {
       'Content-Type': 'application/graphql',
       Authorization: 'Basic ' + Buffer.from(`:${this.apiToken}`).toString('base64'),
