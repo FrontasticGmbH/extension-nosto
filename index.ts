@@ -7,25 +7,18 @@ import RecommendationApiFactory from './apis/RecommendationApiFactory';
 export default {
   'data-sources': {
     'nosto/product-recommendations': async (config: DataSourceConfiguration, context: DataSourceContext) => {
-      console.log('##############################');
-      console.log('nosto/product-recommendations');
-
       validate(config, context);
       const target: string = context.request.query.target;
+      const nostoSessionId: string = context.request.query.nostoSessionId;
       const pageType: string = config.configuration.pageType;
 
-      console.log('$$$$$$$$$$$ ready to new RecommendationApi $$$$$$$$$$$$$');
-      const recommendApi: BaseApi = RecommendationApiFactory.getInstance(context.frontasticContext, pageType);
-      console.log(recommendApi.getSessionId());
-      if (recommendApi && !recommendApi.getSessionId()) {
-        console.log('####### create session ######');
-        await recommendApi.createSession();
-      }
-      console.log(recommendApi.getSessionId());
-
-      const recommendedProducts: [] = await recommendApi.fetchRecommendation(target);
-      console.log('######### recommendedProducts #########');
-      console.log(recommendedProducts);
+      const placementId: string = config.configuration.placementId;
+      const recommendApi: BaseApi = RecommendationApiFactory.getInstance(
+        context.frontasticContext,
+        nostoSessionId,
+        pageType,
+      );
+      const recommendedProducts: Product[] = await recommendApi.fetchRecommendation(target, placementId);
       return {
         dataSourcePayload: { recommendedProducts },
       };
@@ -47,6 +40,7 @@ function validate(config: DataSourceConfiguration, context: DataSourceContext) {
 
   const target: string = context.request?.query?.target;
   const pageType: string = config.configuration?.pageType;
+  const nostoSessionId: string = context.request.query.nostoSessionId;
 
   if (!target) {
     throw new ValidationError({
@@ -56,6 +50,11 @@ function validate(config: DataSourceConfiguration, context: DataSourceContext) {
   if (!pageType) {
     throw new ValidationError({
       message: `pageType is not defined in data source configuration ${config.configuration}`,
+    });
+  }
+  if (!nostoSessionId) {
+    throw new ValidationError({
+      message: `nostoSessionId is not defined in context request ${context.request}`,
     });
   }
 }

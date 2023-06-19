@@ -1,25 +1,26 @@
 // @ts-ignore
 import fetch from 'node-fetch';
 import { Context } from '@frontastic/extension-types';
-import { Guid } from '@Commerce-commercetools/utils/Guid';
+import { Product } from '@Types/product/Product';
 
 const apiUrl = 'https://api.nosto.com/v1/graphql';
 
 export default abstract class BaseApi {
   private sessionId: string;
   private apiToken: string;
-  constructor(frontasticContext: Context) {
+  constructor(frontasticContext: Context, nostoSessionId: string) {
     const configuration = frontasticContext.project.configuration;
     this.apiToken = configuration?.nosto?.apiToken;
+    this.sessionId = nostoSessionId;
   }
 
   public getSessionId(): string {
     return this.sessionId;
   }
 
-  public abstract fetchRecommendation(target: string);
+  public abstract fetchRecommendation(target: string, placementId: string): Promise<Product[]>;
 
-  protected fetch(body: string): Promise<string> {
+  protected fetch(body: string) {
     const headers = {
       'Content-Type': 'application/graphql',
       Authorization: 'Basic ' + Buffer.from(`:${this.apiToken}`).toString('base64'),
@@ -37,13 +38,5 @@ export default abstract class BaseApi {
     } catch (error) {
       throw error;
     }
-  }
-
-  public async createSession(): Promise<void> {
-    const body = `mutation {newSession(referer: "https://google.com?q=shoes")}`;
-    const createSessionResult = await this.fetch(body);
-    const sessionId = createSessionResult?.data?.newSession;
-    console.log(createSessionResult);
-    this.sessionId = sessionId;
   }
 }

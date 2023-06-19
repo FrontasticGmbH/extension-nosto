@@ -4,8 +4,6 @@ import { Variant } from '@Types/product/Variant';
 import { Category } from '@Types/product/Category';
 import { NostoProduct } from '../interfaces/NostoProduct';
 
-const placementCustomerMightLike = 'productpage-nosto-2';
-
 export class NostoMapper {
   private static mapToVariants(recommendedProduct: NostoProduct, price: Money): Variant[] {
     const variants: Variant[] = [];
@@ -30,11 +28,7 @@ export class NostoMapper {
     return categories;
   }
 
-  static mapNostoResponseToProducts(recommendationResult: any): Product[] {
-    const placementList: [] = recommendationResult?.data?.updateSession?.pages?.forProductPage;
-    console.log(placementList);
-    const recommendedProducts = placementList.filter((obj) => obj?.resultId == placementCustomerMightLike)[0]?.primary;
-
+  static mapNostoResponseToProducts(recommendedProducts: NostoProduct[]): Product[] {
     const products: Product[] = [];
 
     recommendedProducts.forEach((recommendedProduct: NostoProduct) => {

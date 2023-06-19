@@ -12,8 +12,14 @@
           "field": "pageType",
           "type": "string",
           "translatable": false
+        },
+        {
+          "label": "Nosto Placement ID",
+          "field": "placementId",
+          "type": "string",
+          "translatable": false
         }
       ]
-    }a
+    }
   ]
 }
