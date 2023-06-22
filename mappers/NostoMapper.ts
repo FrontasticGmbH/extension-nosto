@@ -5,25 +5,21 @@ import { Category } from '@Types/product/Category';
 import { NostoProduct } from '../interfaces/NostoProduct';
 
 export class NostoMapper {
-  private static mapToVariants(recommendedProduct: NostoProduct, price: Money): Variant[] {
-    const variants: Variant[] = [];
+  private static mapToVariant(recommendedProduct: NostoProduct, price: Money): Variant {
     const variant: Variant = {
       sku: recommendedProduct?.productId,
       price: price,
       images: [recommendedProduct?.imageUrl],
     };
-    variants.push(variant);
-    return variants;
+    return variant;
   }
 
   private static mapToCategories(recommendedProduct: NostoProduct): Category[] {
-    const categories: Category[] = [];
-    const categoriesText: string[] = recommendedProduct?.categories;
-    categoriesText.forEach((categoryName) => {
+    const categories: Category[] = recommendedProduct?.categories.map((categoryName) => {
       const category: Category = {
         name: categoryName,
       };
-      categories.push(category);
+      return category;
     });
     return categories;
   }
@@ -36,12 +32,12 @@ export class NostoMapper {
         fractionDigits: 0,
         centAmount: recommendedProduct?.listPrice,
       };
-      const variants: Variant[] = this.mapToVariants(recommendedProduct, price);
+      const variant: Variant = this.mapToVariant(recommendedProduct, price);
       const categories: Category[] = this.mapToCategories(recommendedProduct);
       const product: Product = {
         name: recommendedProduct?.name,
         categories,
-        variants,
+        variants: [variant],
         _url: 'https://commercetools.com',
       };
       products.push(product);
