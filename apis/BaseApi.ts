@@ -3,14 +3,14 @@ import fetch from 'node-fetch';
 import { Context } from '@frontastic/extension-types';
 import { Product } from '@Types/product/Product';
 
-const apiUrl = 'https://api.nosto.com/v1/graphql';
-
 export default abstract class BaseApi {
   private sessionId: string;
   private apiToken: string;
+  private apiUrl: string;
   constructor(frontasticContext: Context, nostoSessionId: string) {
     const configuration = frontasticContext.project.configuration;
     this.apiToken = configuration?.nosto?.apiToken;
+    this.apiUrl = configuration?.nosto?.apiUrl;
     this.sessionId = nostoSessionId;
   }
 
@@ -26,7 +26,7 @@ export default abstract class BaseApi {
       Authorization: 'Basic ' + Buffer.from(`:${this.apiToken}`).toString('base64'),
     };
     try {
-      const responseJson = fetch(apiUrl, {
+      const responseJson = fetch(this.apiUrl, {
         method: 'POST',
         body,
         headers,
