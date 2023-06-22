@@ -30,6 +30,7 @@ export default class FrontPageRecommendationApi extends BaseApi {
               listPrice
               imageUrl
               categories
+              url
             }
           }
         }

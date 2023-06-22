@@ -30,6 +30,7 @@ export default class CartPageRecommendationApi extends BaseApi {
               listPrice
               imageUrl
               categories
+              url
             }
           }
         }

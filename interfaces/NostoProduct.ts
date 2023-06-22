@@ -4,4 +4,5 @@ export interface NostoProduct {
   listPrice: number;
   imageUrl: string;
   categories: string[];
+  url: string;
 }

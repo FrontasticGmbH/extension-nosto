@@ -38,7 +38,7 @@ export class NostoMapper {
         name: recommendedProduct?.name,
         categories,
         variants: [variant],
-        _url: 'https://commercetools.com',
+        _url: recommendedProduct.url,
       };
       products.push(product);
     });

@@ -30,6 +30,7 @@ export default class SearchPageRecommendationApi extends BaseApi {
               listPrice
               imageUrl
               categories
+              url
             }
           }
         }
