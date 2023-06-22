@@ -15,13 +15,11 @@ export class NostoMapper {
   }
 
   private static mapToCategories(recommendedProduct: NostoProduct): Category[] {
-    const categories: Category[] = recommendedProduct?.categories.map((categoryName) => {
-      const category: Category = {
+    return recommendedProduct?.categories.map((categoryName) => {
+      return {
         name: categoryName,
       };
-      return category;
     });
-    return categories;
   }
 
   static mapNostoResponseToProducts(recommendedProducts: NostoProduct[]): Product[] {
