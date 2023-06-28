@@ -1,4 +1,3 @@
-// @ts-ignore
 import ProductPageRecommendationApi from './ProductPageRecommendationApi';
 import CategoryPageRecommendationApi from './CategoryPageRecommendationApi';
 import SearchPageRecommendationApi from './SearchPageRecommendationApi';

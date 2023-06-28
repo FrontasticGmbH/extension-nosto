@@ -1,5 +1,3 @@
-// @ts-ignore
-
 import BaseApi from './BaseApi';
 import { NostoMapper } from '../mappers/NostoMapper';
 import { Product } from '@Types/product/Product';
