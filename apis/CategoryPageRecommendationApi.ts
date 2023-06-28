@@ -9,7 +9,7 @@ import { NostoProduct } from '../interfaces/NostoProduct';
 export default class CategoryPageRecommendationApi extends BaseApi {
   async fetchRecommendation(target: string, placementId: string): Promise<Product[]> {
     const sessionId = this.getSessionId();
-    let body = `mutation {
+    const body = `mutation {
       updateSession(by: BY_CID, id: "${sessionId}",
         params: {
           event: {
