@@ -10,18 +10,18 @@ import { ValidationError } from '../utils/Errors';
 
 export default class RecommendationApiFactory {
   public static getInstance(frontasticContext: Context, nostoSessionId: string, pageType: string): BaseApi {
-    switch(pageType) {
-      case 'PRODUCT' :
+    switch (pageType) {
+      case 'PRODUCT':
         return new ProductPageRecommendationApi(frontasticContext, nostoSessionId);
-      case 'CATEGORY' :
+      case 'CATEGORY':
         return new CategoryPageRecommendationApi(frontasticContext, nostoSessionId);
-      case 'SEARCH' :
+      case 'SEARCH':
         return new SearchPageRecommendationApi(frontasticContext, nostoSessionId);
-      case 'CART' :
+      case 'CART':
         return new CartPageRecommendationApi(frontasticContext, nostoSessionId);
-      case 'FRONT' :
+      case 'FRONT':
         return new FrontPageRecommendationApi(frontasticContext, nostoSessionId);
-      default :
+      default:
         throw new ValidationError({
           message: `pageType is not valid. ${pageType} is not included within [PRODUCT, CATEGORY, SEARCH, CART, FRONT]`,
         });
