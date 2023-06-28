@@ -10,14 +10,21 @@ import { ValidationError } from '../utils/Errors';
 
 export default class RecommendationApiFactory {
   public static getInstance(frontasticContext: Context, nostoSessionId: string, pageType: string): BaseApi {
-    if (pageType === 'PRODUCT') return new ProductPageRecommendationApi(frontasticContext, nostoSessionId);
-    else if (pageType === 'CATEGORY') return new CategoryPageRecommendationApi(frontasticContext, nostoSessionId);
-    else if (pageType === 'SEARCH') return new SearchPageRecommendationApi(frontasticContext, nostoSessionId);
-    else if (pageType === 'CART') return new CartPageRecommendationApi(frontasticContext, nostoSessionId);
-    else if (pageType === 'FRONT') return new FrontPageRecommendationApi(frontasticContext, nostoSessionId);
-    else
-      throw new ValidationError({
-        message: `pageType is not valid. ${pageType} is not included within [PRODUCT, CATEGORY, SEARCH, CART, FRONT]`,
-      });
+    switch(pageType) {
+      case 'PRODUCT' :
+        return new ProductPageRecommendationApi(frontasticContext, nostoSessionId);
+      case 'CATEGORY' :
+        return new CategoryPageRecommendationApi(frontasticContext, nostoSessionId);
+      case 'SEARCH' :
+        return new SearchPageRecommendationApi(frontasticContext, nostoSessionId);
+      case 'CART' :
+        return new CartPageRecommendationApi(frontasticContext, nostoSessionId);
+      case 'FRONT' :
+        return new FrontPageRecommendationApi(frontasticContext, nostoSessionId);
+      default :
+        throw new ValidationError({
+          message: `pageType is not valid. ${pageType} is not included within [PRODUCT, CATEGORY, SEARCH, CART, FRONT]`,
+        });
+    }
   }
 }
