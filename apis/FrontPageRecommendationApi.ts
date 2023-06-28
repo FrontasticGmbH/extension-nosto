@@ -38,7 +38,6 @@ export default class FrontPageRecommendationApi extends BaseApi {
     const placementList: Recommendations[] = recommendationResult?.data?.updateSession?.pages?.forFrontPage;
     const recommendations: Recommendations = placementList.filter((obj) => obj?.resultId == placementId)[0];
     const recommendedProducts: NostoProduct[] = recommendations?.primary;
-    const mappedProducts: Product[] = NostoMapper.mapNostoResponseToProducts(recommendedProducts);
-    return mappedProducts;
+    return NostoMapper.mapNostoResponseToProducts(recommendedProducts);
   }
 }
