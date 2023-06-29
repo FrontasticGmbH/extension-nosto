@@ -8,11 +8,8 @@ export default {
   'data-sources': {
     'nosto/product-recommendations': async (config: DataSourceConfiguration, context: DataSourceContext) => {
       validate(config, context);
-      const target: string = context.request.query.target;
-      const nostoSessionId: string = context.request.query.nostoSessionId;
-      const pageType: string = config.configuration.pageType;
-
-      const placementId: string = config.configuration.placementId;
+      const { target, nostoSessionId } = context.request.query;
+      const { pageType, placementId } = config.configuration;
       const recommendApi: BaseApi = RecommendationApiFactory.getInstance(
         context.frontasticContext,
         nostoSessionId,
