@@ -18,19 +18,8 @@ export default class CategoryPageRecommendationApi extends BaseApi {
       ) {
         pages {
           forCategoryPage(params: {
-            isPreview: false, imageVersion:  VERSION_8_400_400
-          }, category: "${target}") {
-            divId
-            resultId
-            primary {
-              productId
-              name
-              listPrice
-              imageUrl
-              categories
-              url
-            }
-          }
+            isPreview: false, imageVersion:   ${this.getQueryImageVersion()}
+          }, category: "${target}") ${this.getQueryFields()}
         }
       }
     }`;

@@ -18,19 +18,8 @@ export default class CartPageRecommendationApi extends BaseApi {
       ) {
         pages {
           forCartPage(params: {
-            isPreview: false, imageVersion:  VERSION_8_400_400
-          }, value: 100) {
-            divId
-            resultId
-            primary {
-              productId
-              name
-              listPrice
-              imageUrl
-              categories
-              url
-            }
-          }
+            isPreview: false, imageVersion:  ${this.getQueryImageVersion()}
+          }, value: 100) ${this.getQueryFields()}
         }
       }
     }`;

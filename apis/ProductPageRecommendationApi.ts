@@ -19,19 +19,8 @@ export default class ProductPageRecommendationApi extends BaseApi {
       ) {
         pages {
           forProductPage(params: {
-            isPreview: false, imageVersion:  VERSION_8_400_400
-          }, product: "${target}") {
-            divId
-            resultId
-            primary {
-              productId
-              name
-              listPrice
-              imageUrl
-              categories
-              url
-            }
-          }
+            isPreview: false, imageVersion:   ${this.getQueryImageVersion()}
+          }, product: "${target}") ${this.getQueryFields()}
         }
       }
     }`;

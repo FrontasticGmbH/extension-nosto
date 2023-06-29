@@ -18,19 +18,8 @@ export default class FrontPageRecommendationApi extends BaseApi {
       ) {
         pages {
           forFrontPage(params: {
-            isPreview: false, imageVersion:  VERSION_8_400_400
-          }) {
-            divId
-            resultId
-            primary {
-              productId
-              name
-              listPrice
-              imageUrl
-              categories
-              url
-            }
-          }
+            isPreview: false, imageVersion:  ${this.getQueryImageVersion()}
+          }) ${this.getQueryFields()}
         }
       }
     }`;

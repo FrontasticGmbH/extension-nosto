@@ -18,19 +18,8 @@ export default class SearchPageRecommendationApi extends BaseApi {
       ) {
         pages {
           forSearchPage(params: {
-            isPreview: false, imageVersion:  VERSION_8_400_400
-          }, term: "${target}") {
-            divId
-            resultId
-            primary {
-              productId
-              name
-              listPrice
-              imageUrl
-              categories
-              url
-            }
-          }
+            isPreview: false, imageVersion:   ${this.getQueryImageVersion()}
+          }, term: "${target}") ${this.getQueryFields()}
         }
       }
     }`;
